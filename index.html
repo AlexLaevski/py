@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}</style>
+<title>Решения по Python</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column, sticky jump bar, each task = condition + sample run + code */
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --fg:#1d2420; --muted:#5d6862; --line:#dde2de;
+  --accent:#1f6f54; --accent-soft:#e3efe9; --code-bg:#f0f2ef;
+  --sans:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --panel:#1b211e; --fg:#e4ebe7; --muted:#97a39c; --line:#2c3531;
+  --accent:#6fcfa6; --accent-soft:#20322a; --code-bg:#111614; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --panel:#1b211e; --fg:#e4ebe7; --muted:#97a39c; --line:#2c3531;
+  --accent:#6fcfa6; --accent-soft:#20322a; --code-bg:#111614; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+h1{font-size:1.9rem;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:6px 0 0;color:var(--muted);max-width:62ch}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;
+  display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line)}
+nav a{font-size:.85rem;color:var(--accent);text-decoration:none;padding:5px 10px;border-radius:999px;background:var(--accent-soft)}
+nav a:hover,nav a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.task{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0;scroll-margin-top:70px}
+.task header{display:flex;flex-direction:column;gap:2px}
+.sub{margin:0;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+h2{margin:0;font-size:1.3rem}
+.cond{margin:0;max-width:65ch}
+.io{display:flex;flex-direction:column;gap:4px;font-size:.9rem}
+.io-row{display:grid;grid-template-columns:7.5rem 1fr;gap:10px;align-items:baseline;min-width:0}
+.io-k{color:var(--muted)}
+.io code{font-family:var(--mono);font-size:.85rem;overflow-wrap:anywhere}
+.io-row.out code{color:var(--accent);font-weight:600}
+.codebox{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-width:0}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 8px 6px 12px;background:var(--code-bg);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.copy{font:600 .85rem var(--sans);background:var(--accent);color:var(--panel);border:0;border-radius:6px;padding:7px 14px;cursor:pointer}
+.copy:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.copy.done{background:var(--accent-soft);color:var(--accent)}
+pre{margin:0;padding:14px;background:var(--code-bg);overflow-x:auto;max-height:520px}
+pre code{font-family:var(--mono);font-size:.82rem;line-height:1.6;white-space:pre}
+.how{font-size:.9rem;color:var(--muted);margin:0}
+@media (max-width:480px){.task{padding:16px}.io-row{grid-template-columns:5.5rem 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <h1>Решения по Python</h1>
+    <p class="lead">Нажми «Скопировать» у нужной задачи, вставь код в новый файл в PyCharm и запусти: правый клик по файлу → Run. Данные вводятся в консоли внизу, пример ввода указан у каждой задачи.</p>
+  </div>
+  <nav><a href="#t21">Задачи 2.1 · №16</a><a href="#t22">Задачи 2.2 · №16</a><a href="#t23">Задачи 2.3 · №16</a><a href="#t24">Задача 2.4 · №16</a><a href="#prime">Простые во вложенных списках</a><a href="#calc">Текстовый калькулятор</a></nav>
+  <section class="task" id="t21">
+  <header><p class="sub">Списки</p><h2>Задачи 2.1 · №16</h2></header>
+  <p class="cond">Дан список из N элементов и числа K и L (1 ≤ K ≤ L ≤ N). Найти среднее арифметическое всех четных элементов с порядковыми номерами от K до L включительно.</p>
+  <div class="io"><div class="io-row"><span class="io-k">Список</span><code>3 4 7 10 6 5 8</code></div><div class="io-row"><span class="io-k">K</span><code>2</code></div><div class="io-row"><span class="io-k">L</span><code>6</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>6.67</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>t21.py · 20 строк</span><button type="button" class="copy" id="copy-t21" data-for="code-t21">Скопировать</button></div>
+    <pre id="code-t21"><code>print(&quot;Среднее арифметическое четных элементов с номерами от K до L&quot;)
+
+spisok = input(&quot;Введите элементы списка через пробел: &quot;).split()
+for i in range(len(spisok)):
+    spisok[i] = int(spisok[i])
+
+k = int(input(&quot;Введите K: &quot;))
+l = int(input(&quot;Введите L: &quot;))
+
+summa = 0
+kol = 0
+for i in range(k - 1, l):
+    if spisok[i] % 2 == 0:
+        summa = summa + spisok[i]
+        kol = kol + 1
+
+if kol == 0:
+    print(&quot;Четных элементов нет&quot;)
+else:
+    print(&quot;Ответ:&quot;, round(summa / kol, 2))
+</code></pre>
+  </div>
+</section>
+  <section class="task" id="t22">
+  <header><p class="sub">Сортировка списков</p><h2>Задачи 2.2 · №16</h2></header>
+  <p class="cond">Выбрать из списка все двузначные числа и упорядочить их по возрастанию суммы цифр.</p>
+  <div class="io"><div class="io-row"><span class="io-k">Список</span><code>5 91 23 100 -45 10 19 7 33</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>[10, 23, 33, -45, 91, 19]</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>t22.py · 22 строк</span><button type="button" class="copy" id="copy-t22" data-for="code-t22">Скопировать</button></div>
+    <pre id="code-t22"><code>print(&quot;Двузначные числа по возрастанию суммы цифр&quot;)
+
+spisok = input(&quot;Введите элементы списка через пробел: &quot;).split()
+
+dvuz = []
+for x in spisok:
+    x = int(x)
+    if 10 &lt;= abs(x) &lt;= 99:
+        dvuz.append(x)
+
+
+def summa_cifr(x):
+    x = abs(x)
+    return x // 10 + x % 10
+
+
+dvuz.sort(key=summa_cifr)
+
+if len(dvuz) == 0:
+    print(&quot;Двузначных чисел нет&quot;)
+else:
+    print(&quot;Ответ:&quot;, dvuz)
+</code></pre>
+  </div>
+</section>
+  <section class="task" id="t23">
+  <header><p class="sub">Вложенные списки</p><h2>Задачи 2.3 · №16</h2></header>
+  <p class="cond">Дана матрица M × N. Найти номер первого столбца с максимальным количеством отрицательных элементов. Если таких нет, вывести 0.</p>
+  <div class="io"><div class="io-row"><span class="io-k">M</span><code>3</code></div><div class="io-row"><span class="io-k">N</span><code>4</code></div><div class="io-row"><span class="io-k">Строка 1</span><code>1 -2 -3 4</code></div><div class="io-row"><span class="io-k">Строка 2</span><code>-5 6 -7 8</code></div><div class="io-row"><span class="io-k">Строка 3</span><code>9 -1 2 3</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>2</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>t23.py · 24 строк</span><button type="button" class="copy" id="copy-t23" data-for="code-t23">Скопировать</button></div>
+    <pre id="code-t23"><code>print(&quot;Номер первого столбца с максимальным количеством отрицательных элементов&quot;)
+
+m = int(input(&quot;Введите количество строк M: &quot;))
+n = int(input(&quot;Введите количество столбцов N: &quot;))
+
+matrica = []
+for i in range(m):
+    stroka = input(&quot;Введите строку &quot; + str(i + 1) + &quot;: &quot;).split()
+    for j in range(n):
+        stroka[j] = int(stroka[j])
+    matrica.append(stroka)
+
+maks = 0
+otvet = 0
+for j in range(n):
+    kol = 0
+    for i in range(m):
+        if matrica[i][j] &lt; 0:
+            kol = kol + 1
+    if kol &gt; maks:
+        maks = kol
+        otvet = j + 1
+
+print(&quot;Ответ:&quot;, otvet)
+</code></pre>
+  </div>
+</section>
+  <section class="task" id="t24">
+  <header><p class="sub">Кортежи</p><h2>Задача 2.4 · №16</h2></header>
+  <p class="cond">а) Создать кортеж из строки с числами через запятую. б) Отсортировать кортеж по длине строк.</p>
+  <div class="io"><div class="io-row"><span class="io-k">а)</span><code>10, 20, 3, 45</code></div><div class="io-row"><span class="io-k">б)</span><code>яблоко кот арбуз ёж</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>(10, 20, 3, 45) и (&#x27;ёж&#x27;, &#x27;кот&#x27;, &#x27;арбуз&#x27;, &#x27;яблоко&#x27;)</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>t24.py · 14 строк</span><button type="button" class="copy" id="copy-t24" data-for="code-t24">Скопировать</button></div>
+    <pre id="code-t24"><code>print(&quot;а) Кортеж из строки с числами через запятую&quot;)
+stroka = input(&quot;Введите числа через запятую: &quot;)
+chisla = []
+for x in stroka.split(&quot;,&quot;):
+    chisla.append(int(x))
+kortezh = tuple(chisla)
+print(&quot;Кортеж:&quot;, kortezh)
+
+print()
+print(&quot;б) Сортировка кортежа по длине строк&quot;)
+kortezh2 = tuple(input(&quot;Введите строки через пробел: &quot;).split())
+print(&quot;Исходный кортеж:&quot;, kortezh2)
+kortezh2 = tuple(sorted(kortezh2, key=len))
+print(&quot;Отсортированный кортеж:&quot;, kortezh2)
+</code></pre>
+  </div>
+</section>
+  <section class="task" id="prime">
+  <header><p class="sub">Исправленное решение</p><h2>Простые во вложенных списках</h2></header>
+  <p class="cond">Для всех вложенных списков оставить только простые числа. Исправлена опечатка в данных: последний список [45, 1, 9, 7]. Число 1 не простое, поэтому в ответе его нет (в примере из задания ошибка).</p>
+  <div class="io"><div class="io-row out"><span class="io-k">Ответ</span><code>[[5], [3, 11], [7]]</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>prime.py · 12 строк</span><button type="button" class="copy" id="copy-prime" data-for="code-prime">Скопировать</button></div>
+    <pre id="code-prime"><code>lst = [[6,5,8], [3,4,12,33,11], [45,1,9,7]]
+
+def sim(n):
+    if n &lt; 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+res = [[x for x in s if sim(x)] for s in lst]
+print(res)
+</code></pre>
+  </div>
+</section>
+  <section class="task" id="calc">
+  <header><p class="sub">Базовое задание + доп. 1–4 (11 баллов)</p><h2>Текстовый калькулятор</h2></header>
+  <p class="cond">calc(&quot;двадцать пять плюс тринадцать&quot;) → &quot;тридцать восемь&quot;. Деление и остаток, дроби до миллионных, периодические дроби, приоритет операций (обратная польская запись), скобки.</p>
+  <div class="io"><div class="io-row"><span class="io-k">Пример</span><code>calc(&quot;скобка открывается пять плюс два скобка закрывается умножить на три минус один&quot;)</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>&quot;двадцать&quot;</code></div></div>
+  <div class="codebox">
+    <div class="bar"><span>calc.py · 386 строк</span><button type="button" class="copy" id="copy-calc" data-for="code-calc">Скопировать</button></div>
+    <pre id="code-calc"><code>&#x27;&#x27;&#x27;1:
+сорок один и тридцать одна сотая разделить на семнадцать → два и сорок три сотых
+
+2:
+девятнадцать и восемьдесят две сотых разделить на девяносто девять → ноль и двадцать сотых и ноль два в периоде
+
+3:
+пять плюс два умножить на три минус один → десять
+
+4:
+скобка открывается пять плюс два скобка закрывается умножить на три минус один → двадцать&#x27;&#x27;&#x27;
+
+
+
+from fractions import Fraction
+
+# ---------------------------------------------------------------- словари
+
+UNITS = {
+    &quot;ноль&quot;: 0, &quot;один&quot;: 1, &quot;одна&quot;: 1, &quot;одно&quot;: 1, &quot;два&quot;: 2, &quot;две&quot;: 2,
+    &quot;три&quot;: 3, &quot;четыре&quot;: 4, &quot;пять&quot;: 5, &quot;шесть&quot;: 6, &quot;семь&quot;: 7,
+    &quot;восемь&quot;: 8, &quot;девять&quot;: 9,
+}
+TEENS = {
+    &quot;десять&quot;: 10, &quot;одиннадцать&quot;: 11, &quot;двенадцать&quot;: 12, &quot;тринадцать&quot;: 13,
+    &quot;четырнадцать&quot;: 14, &quot;пятнадцать&quot;: 15, &quot;шестнадцать&quot;: 16,
+    &quot;семнадцать&quot;: 17, &quot;восемнадцать&quot;: 18, &quot;девятнадцать&quot;: 19,
+}
+TENS = {
+    &quot;двадцать&quot;: 20, &quot;тридцать&quot;: 30, &quot;сорок&quot;: 40, &quot;пятьдесят&quot;: 50,
+    &quot;шестьдесят&quot;: 60, &quot;семьдесят&quot;: 70, &quot;восемьдесят&quot;: 80, &quot;девяносто&quot;: 90,
+}
+HUNDREDS = {
+    &quot;сто&quot;: 100, &quot;двести&quot;: 200, &quot;триста&quot;: 300, &quot;четыреста&quot;: 400,
+    &quot;пятьсот&quot;: 500, &quot;шестьсот&quot;: 600, &quot;семьсот&quot;: 700, &quot;восемьсот&quot;: 800,
+    &quot;девятьсот&quot;: 900,
+}
+SCALES = {
+    &quot;тысяча&quot;: 10**3, &quot;тысячи&quot;: 10**3, &quot;тысяч&quot;: 10**3,
+    &quot;миллион&quot;: 10**6, &quot;миллиона&quot;: 10**6, &quot;миллионов&quot;: 10**6,
+}
+NUMBER_WORDS = set(UNITS) | set(TEENS) | set(TENS) | set(HUNDREDS) | set(SCALES)
+
+# знаков после запятой -&gt; (форма для &quot;одна ...&quot;, форма для остальных)
+FRACTION_NAMES = {
+    1: (&quot;десятая&quot;, &quot;десятых&quot;),
+    2: (&quot;сотая&quot;, &quot;сотых&quot;),
+    3: (&quot;тысячная&quot;, &quot;тысячных&quot;),
+    4: (&quot;десятитысячная&quot;, &quot;десятитысячных&quot;),
+    5: (&quot;стотысячная&quot;, &quot;стотысячных&quot;),
+    6: (&quot;миллионная&quot;, &quot;миллионных&quot;),
+}
+FRACTION_DIGITS = {form: d for d, forms in FRACTION_NAMES.items() for form in forms}
+
+MAX_DIGITS = 6   # дробная часть до миллионных включительно
+MAX_PERIOD = 4   # период до четырех знаков
+
+# фразы операций; длинные варианты идут раньше коротких
+OPERATOR_PHRASES = [
+    ((&quot;остаток&quot;, &quot;от&quot;, &quot;деления&quot;, &quot;на&quot;), &quot;%&quot;),
+    ((&quot;остаток&quot;, &quot;от&quot;, &quot;деления&quot;), &quot;%&quot;),
+    ((&quot;скобка&quot;, &quot;открывается&quot;), &quot;(&quot;),
+    ((&quot;скобка&quot;, &quot;закрывается&quot;), &quot;)&quot;),
+    ((&quot;умножить&quot;, &quot;на&quot;), &quot;*&quot;),
+    ((&quot;умножить&quot;,), &quot;*&quot;),
+    ((&quot;разделить&quot;, &quot;на&quot;), &quot;/&quot;),
+    ((&quot;разделить&quot;,), &quot;/&quot;),
+    ((&quot;плюс&quot;,), &quot;+&quot;),
+    ((&quot;минус&quot;,), &quot;-&quot;),
+]
+
+PRECEDENCE = {&quot;+&quot;: 1, &quot;-&quot;: 1, &quot;*&quot;: 2, &quot;/&quot;: 2, &quot;%&quot;: 2, &quot;neg&quot;: 3}
+
+
+# ------------------------------------------------------- слова -&gt; число
+
+def _parse_triple(words):
+    &quot;&quot;&quot;Число от 1 до 999: [сотни] [десятки] [единицы] или [сотни] [10..19].&quot;&quot;&quot;
+    value, last_rank, after_teen = 0, 4, False
+    for w in words:
+        if after_teen:
+            raise ValueError(&quot;неверная запись числа: «%s»&quot; % &quot; &quot;.join(words))
+        if w in HUNDREDS:
+            rank, v = 3, HUNDREDS[w]
+        elif w in TENS:
+            rank, v = 2, TENS[w]
+        elif w in TEENS:
+            rank, v, after_teen = 1.5, TEENS[w], True
+        elif w in UNITS and w != &quot;ноль&quot;:
+            rank, v = 1, UNITS[w]
+        else:
+            raise ValueError(&quot;неверная запись числа: «%s»&quot; % &quot; &quot;.join(words))
+        if rank &gt;= last_rank or (rank == 1.5 and last_rank == 2):
+            raise ValueError(&quot;неверная запись числа: «%s»&quot; % &quot; &quot;.join(words))
+        value += v
+        last_rank = rank
+    return value
+
+
+def parse_int(words):
+    &quot;&quot;&quot;Целое число от 0 до 999 999 999, записанное словами.&quot;&quot;&quot;
+    if words == [&quot;ноль&quot;]:
+        return 0
+    total, chunk, prev_scale = 0, [], None
+    for w in words:
+        if w in SCALES:
+            scale = SCALES[w]
+            if prev_scale is not None and scale &gt;= prev_scale:
+                raise ValueError(&quot;неверная запись числа: «%s»&quot; % &quot; &quot;.join(words))
+            total += (_parse_triple(chunk) if chunk else 1) * scale
+            chunk, prev_scale = [], scale
+        else:
+            chunk.append(w)
+    if chunk:
+        total += _parse_triple(chunk)
+    return total
+
+
+# ------------------------------------------------------- число -&gt; слова
+
+_UNITS_M = [&quot;&quot;, &quot;один&quot;, &quot;два&quot;, &quot;три&quot;, &quot;четыре&quot;, &quot;пять&quot;, &quot;шесть&quot;, &quot;семь&quot;, &quot;восемь&quot;, &quot;девять&quot;]
+_UNITS_F = [&quot;&quot;, &quot;одна&quot;, &quot;две&quot;] + _UNITS_M[3:]
+_TEENS = [&quot;десять&quot;, &quot;одиннадцать&quot;, &quot;двенадцать&quot;, &quot;тринадцать&quot;, &quot;четырнадцать&quot;,
+          &quot;пятнадцать&quot;, &quot;шестнадцать&quot;, &quot;семнадцать&quot;, &quot;восемнадцать&quot;, &quot;девятнадцать&quot;]
+_TENS = [&quot;&quot;, &quot;&quot;, &quot;двадцать&quot;, &quot;тридцать&quot;, &quot;сорок&quot;, &quot;пятьдесят&quot;, &quot;шестьдесят&quot;,
+         &quot;семьдесят&quot;, &quot;восемьдесят&quot;, &quot;девяносто&quot;]
+_HUNDREDS = [&quot;&quot;, &quot;сто&quot;, &quot;двести&quot;, &quot;триста&quot;, &quot;четыреста&quot;, &quot;пятьсот&quot;, &quot;шестьсот&quot;,
+             &quot;семьсот&quot;, &quot;восемьсот&quot;, &quot;девятьсот&quot;]
+_SCALE_NAMES = [
+    (10**12, (&quot;триллион&quot;, &quot;триллиона&quot;, &quot;триллионов&quot;), False),
+    (10**9, (&quot;миллиард&quot;, &quot;миллиарда&quot;, &quot;миллиардов&quot;), False),
+    (10**6, (&quot;миллион&quot;, &quot;миллиона&quot;, &quot;миллионов&quot;), False),
+    (10**3, (&quot;тысяча&quot;, &quot;тысячи&quot;, &quot;тысяч&quot;), True),
+]
+
+
+def _plural(n, forms):
+    &quot;&quot;&quot;forms = (1 тысяча, 2 тысячи, 5 тысяч).&quot;&quot;&quot;
+    if 11 &lt;= n % 100 &lt;= 19:
+        return forms[2]
+    if n % 10 == 1:
+        return forms[0]
+    if 2 &lt;= n % 10 &lt;= 4:
+        return forms[1]
+    return forms[2]
+
+
+def _triple_words(n, feminine):
+    words = []
+    h, rest = divmod(n, 100)
+    if h:
+        words.append(_HUNDREDS[h])
+    if 10 &lt;= rest &lt;= 19:
+        words.append(_TEENS[rest - 10])
+    else:
+        t, u = divmod(rest, 10)
+        if t:
+            words.append(_TENS[t])
+        if u:
+            words.append((_UNITS_F if feminine else _UNITS_M)[u])
+    return words
+
+
+def int_to_words(n, feminine=False):
+    &quot;&quot;&quot;Неотрицательное целое -&gt; слова (&quot;одна&quot;/&quot;две&quot; при feminine=True).&quot;&quot;&quot;
+    if n == 0:
+        return &quot;ноль&quot;
+    if n &gt;= 10**15:
+        raise ValueError(&quot;слишком большое число для записи словами&quot;)
+    words = []
+    for size, forms, fem in _SCALE_NAMES:
+        chunk, n = divmod(n, size)
+        if chunk:
+            words += _triple_words(chunk, fem)
+            words.append(_plural(chunk, forms))
+    if n:
+        words += _triple_words(n, feminine)
+    return &quot; &quot;.join(words)
+
+
+def _fraction_words(numerator, digits):
+    &quot;&quot;&quot;numerator / 10**digits -&gt; &quot;сорок три сотых&quot;, &quot;одна десятая&quot;.&quot;&quot;&quot;
+    singular, plural = FRACTION_NAMES[digits]
+    one = numerator % 10 == 1 and numerator % 100 != 11
+    return &quot;%s %s&quot; % (int_to_words(numerator, feminine=True), singular if one else plural)
+
+
+def _period_words(digits):
+    &quot;&quot;&quot;&#x27;02&#x27; -&gt; &quot;ноль два&quot;: ведущие нули читаем отдельно, остальное числом.&quot;&quot;&quot;
+    rest = digits.lstrip(&quot;0&quot;)
+    words = [&quot;ноль&quot;] * (len(digits) - len(rest))
+    if rest:
+        words.append(int_to_words(int(rest)))
+    return &quot; &quot;.join(words)
+
+
+def _strip_zeros(numerator, digits):
+    while digits and numerator % 10 == 0:
+        numerator //= 10
+        digits -= 1
+    return numerator, digits
+
+
+def _power_split(den):
+    &quot;&quot;&quot;den = 2**a * 5**b * m -&gt; (max(a, b), m).&quot;&quot;&quot;
+    a = b = 0
+    while den % 2 == 0:
+        den //= 2
+        a += 1
+    while den % 5 == 0:
+        den //= 5
+        b += 1
+    return max(a, b), den
+
+
+def format_number(x):
+    &quot;&quot;&quot;Fraction -&gt; текст ответа.&quot;&quot;&quot;
+    negative = x &lt; 0
+    x = abs(x)
+    whole, frac = divmod(x, 1)
+    whole = int(whole)
+    pre_len, rest = _power_split(frac.denominator)
+
+    if frac == 0:
+        parts = []
+    elif rest == 1 and pre_len &lt;= MAX_DIGITS:
+        # конечная дробь, помещается в миллионные
+        parts = [_fraction_words(int(frac * 10**pre_len), pre_len)]
+    else:
+        period_len = next((L for L in range(1, MAX_PERIOD + 1) if pow(10, L, rest) == 1), None)
+        if rest &gt; 1 and period_len and pre_len &lt;= MAX_DIGITS:
+            # периодическая дробь: 0,20(02)
+            pre = int(frac * 10**pre_len)
+            period = int(frac * 10**(pre_len + period_len)) - pre * 10**period_len
+            parts = []
+            if pre_len:
+                parts.append(_fraction_words(pre, pre_len))
+            parts.append(_period_words(str(period).zfill(period_len)) + &quot; в периоде&quot;)
+        else:
+            # округляем до миллионных (половину — вверх)
+            scaled = int(x * 10**MAX_DIGITS + Fraction(1, 2))
+            whole, numerator = divmod(scaled, 10**MAX_DIGITS)
+            numerator, digits = _strip_zeros(numerator, MAX_DIGITS)
+            parts = [_fraction_words(numerator, digits)] if numerator else []
+
+    text = &quot; и &quot;.join([int_to_words(whole)] + parts)
+    if negative and (whole or parts):
+        text = &quot;минус &quot; + text
+    return text
+
+
+# ------------------------------------------------------- разбор выражения
+
+def tokenize(text):
+    &quot;&quot;&quot;Строка -&gt; список токенов: Fraction (число) или строка-операция.&quot;&quot;&quot;
+    words = text.lower().replace(&quot;ё&quot;, &quot;е&quot;).split()
+    tokens, i = [], 0
+    while i &lt; len(words):
+        for phrase, op in OPERATOR_PHRASES:
+            if tuple(words[i:i + len(phrase)]) == phrase:
+                tokens.append(op)
+                i += len(phrase)
+                break
+        else:
+            if words[i] not in NUMBER_WORDS:
+                raise ValueError(&quot;непонятное слово: «%s»&quot; % words[i])
+            j = i
+            while j &lt; len(words) and words[j] in NUMBER_WORDS:
+                j += 1
+            start, i = i, j
+            value = Fraction(parse_int(words[start:i]))
+            # дробь без целой части: &quot;три десятых&quot; = &quot;ноль и три десятых&quot;
+            if i &lt; len(words) and words[i] in FRACTION_DIGITS:
+                digits = FRACTION_DIGITS[words[i]]
+                if value &gt;= 10**digits:
+                    raise ValueError(&quot;дробь больше единицы: «%s»&quot; % &quot; &quot;.join(words[start:i + 1]))
+                value /= 10**digits
+                i += 1
+            # дробная часть: &quot;... и тридцать одна сотая&quot;
+            elif i &lt; len(words) and words[i] == &quot;и&quot;:
+                j = i + 1
+                while j &lt; len(words) and words[j] in NUMBER_WORDS:
+                    j += 1
+                if j == i + 1 or j &gt;= len(words) or words[j] not in FRACTION_DIGITS:
+                    raise ValueError(&quot;после «и» ожидается дробная часть, например «сорок три сотых»&quot;)
+                numerator = parse_int(words[i + 1:j])
+                digits = FRACTION_DIGITS[words[j]]
+                if numerator &gt;= 10**digits:
+                    raise ValueError(&quot;дробная часть больше единицы: «%s»&quot; % &quot; &quot;.join(words[i + 1:j + 1]))
+                value += Fraction(numerator, 10**digits)
+                i = j + 1
+            tokens.append(value)
+    return tokens
+
+
+def to_rpn(tokens):
+    &quot;&quot;&quot;Алгоритм сортировочной станции: инфиксная запись -&gt; обратная польская.&quot;&quot;&quot;
+    output, stack = [], []
+    expect_operand = True
+    for tok in tokens:
+        if isinstance(tok, Fraction):
+            if not expect_operand:
+                raise ValueError(&quot;два числа подряд без операции&quot;)
+            output.append(tok)
+            expect_operand = False
+        elif tok == &quot;(&quot;:
+            if not expect_operand:
+                raise ValueError(&quot;перед скобкой нужна операция&quot;)
+            stack.append(tok)
+        elif tok == &quot;)&quot;:
+            if expect_operand:
+                raise ValueError(&quot;пустые скобки или операция перед закрывающей скобкой&quot;)
+            while stack and stack[-1] != &quot;(&quot;:
+                output.append(stack.pop())
+            if not stack:
+                raise ValueError(&quot;лишняя закрывающая скобка&quot;)
+            stack.pop()
+        elif expect_operand:
+            if tok != &quot;-&quot;:
+                raise ValueError(&quot;операция без левого числа&quot;)
+            stack.append(&quot;neg&quot;)  # унарный минус: &quot;минус пять плюс два&quot;
+        else:
+            while stack and stack[-1] != &quot;(&quot; and PRECEDENCE[stack[-1]] &gt;= PRECEDENCE[tok]:
+                output.append(stack.pop())
+            stack.append(tok)
+            expect_operand = True
+    if expect_operand:
+        raise ValueError(&quot;выражение не закончено&quot;)
+    while stack:
+        op = stack.pop()
+        if op == &quot;(&quot;:
+            raise ValueError(&quot;не закрыта скобка&quot;)
+        output.append(op)
+    return output
+
+
+def eval_rpn(rpn):
+    stack = []
+    for tok in rpn:
+        if isinstance(tok, Fraction):
+            stack.append(tok)
+        elif tok == &quot;neg&quot;:
+            stack.append(-stack.pop())
+        else:
+            b, a = stack.pop(), stack.pop()
+            if tok in &quot;/%&quot; and b == 0:
+                raise ValueError(&quot;деление на ноль&quot;)
+            if tok == &quot;+&quot;:
+                stack.append(a + b)
+            elif tok == &quot;-&quot;:
+                stack.append(a - b)
+            elif tok == &quot;*&quot;:
+                stack.append(a * b)
+            elif tok == &quot;/&quot;:
+                stack.append(a / b)
+            else:
+                stack.append(a % b)
+    return stack[0]
+
+
+def calc(expression):
+    &quot;&quot;&quot;calc(&quot;пять плюс два умножить на три минус один&quot;) -&gt; &quot;десять&quot;.&quot;&quot;&quot;
+    tokens = tokenize(expression)
+    if not tokens:
+        raise ValueError(&quot;пустое выражение&quot;)
+    return format_number(eval_rpn(to_rpn(tokens)))
+
+
+if __name__ == &quot;__main__&quot;:
+    import sys
+
+    if len(sys.argv) &gt; 1:
+        print(calc(&quot; &quot;.join(sys.argv[1:])))
+    else:
+        print(&quot;Введите выражение словами (пустая строка — выход).&quot;)
+        while True:
+            try:
+                line = input(&quot;&gt; &quot;).strip()
+            except EOFError:
+                break
+            if not line:
+                break
+            try:
+                print(calc(line))
+            except ValueError as e:
+                print(&quot;Ошибка:&quot;, e)
+</code></pre>
+  </div>
+</section>
+</div>
+<script>
+document.querySelectorAll(".copy").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var pre=document.getElementById(btn.dataset.for);
+    var text=pre.innerText;
+    function ok(){btn.textContent="Скопировано";btn.classList.add("done");setTimeout(function(){btn.textContent="Скопировать";btn.classList.remove("done")},1800)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent="Выделено, нажми Ctrl+C"}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fallback)}else{fallback()}
+  });
+});
+</script>
+</body>
+</html>
