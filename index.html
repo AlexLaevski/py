@@ -67,17 +67,35 @@ pre code{font-family:var(--mono);font-size:.82rem;line-height:1.6;white-space:pr
   <p class="cond">Дан список из N элементов и числа K и L (1 ≤ K ≤ L ≤ N). Найти среднее арифметическое всех четных элементов с порядковыми номерами от K до L включительно.</p>
   <div class="io"><div class="io-row"><span class="io-k">Список</span><code>3 4 7 10 6 5 8</code></div><div class="io-row"><span class="io-k">K</span><code>2</code></div><div class="io-row"><span class="io-k">L</span><code>6</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>6.666666666666667</code></div></div>
   <div class="codebox">
-    <div class="bar"><span>t21.py · 16 строк</span><button type="button" class="copy" id="copy-t21" data-for="code-t21">Скопировать</button></div>
-    <pre id="code-t21"><code>a = input(&quot;Список: &quot;).split()
-k = int(input(&quot;K: &quot;))
-l = int(input(&quot;L: &quot;))
+    <div class="bar"><span>t21.py · 34 строк</span><button type="button" class="copy" id="copy-t21" data-for="code-t21">Скопировать</button></div>
+    <pre id="code-t21"><code>while True:
+    a = input(&quot;Список (целые числа через пробел): &quot;).split()
+    try:
+        for i in range(len(a)):
+            a[i] = int(a[i])
+        if len(a) == 0:
+            print(&quot;Список пустой, введите хотя бы одно число&quot;)
+        else:
+            break
+    except ValueError:
+        print(&quot;Ошибка: нужны только целые числа через пробел&quot;)
+
+n = len(a)
+while True:
+    try:
+        k = int(input(&quot;K (от 1 до &quot; + str(n) + &quot;): &quot;))
+        l = int(input(&quot;L (от K до &quot; + str(n) + &quot;): &quot;))
+        if 1 &lt;= k &lt;= l &lt;= n:
+            break
+        print(&quot;Ошибка: должно быть 1 &lt;= K &lt;= L &lt;=&quot;, n)
+    except ValueError:
+        print(&quot;Ошибка: K и L должны быть целыми числами&quot;)
 
 s = 0
 c = 0
 for i in range(k - 1, l):
-    x = int(a[i])
-    if x % 2 == 0:
-        s += x
+    if a[i] % 2 == 0:
+        s += a[i]
         c += 1
 
 if c &gt; 0:
@@ -92,12 +110,21 @@ else:
   <p class="cond">Выбрать из списка все двузначные числа и упорядочить их по возрастанию суммы цифр.</p>
   <div class="io"><div class="io-row"><span class="io-k">Список</span><code>5 91 23 100 -45 10 19 7 33</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>[10, 23, 33, -45, 91, 19]</code></div></div>
   <div class="codebox">
-    <div class="bar"><span>t22.py · 15 строк</span><button type="button" class="copy" id="copy-t22" data-for="code-t22">Скопировать</button></div>
-    <pre id="code-t22"><code>a = input(&quot;Список: &quot;).split()
+    <div class="bar"><span>t22.py · 27 строк</span><button type="button" class="copy" id="copy-t22" data-for="code-t22">Скопировать</button></div>
+    <pre id="code-t22"><code>while True:
+    a = input(&quot;Список (целые числа через пробел): &quot;).split()
+    try:
+        for i in range(len(a)):
+            a[i] = int(a[i])
+        if len(a) == 0:
+            print(&quot;Список пустой, введите хотя бы одно число&quot;)
+        else:
+            break
+    except ValueError:
+        print(&quot;Ошибка: нужны только целые числа через пробел&quot;)
 
 b = []
 for x in a:
-    x = int(x)
     if 10 &lt;= abs(x) &lt;= 99:
         b.append(x)
 
@@ -107,7 +134,10 @@ def sc(x):
 
 
 b.sort(key=sc)
-print(&quot;Ответ:&quot;, b)
+if len(b) == 0:
+    print(&quot;Двузначных чисел нет&quot;)
+else:
+    print(&quot;Ответ:&quot;, b)
 </code></pre>
   </div>
 </section>
@@ -116,20 +146,37 @@ print(&quot;Ответ:&quot;, b)
   <p class="cond">Дана матрица M × N. Найти номер первого столбца с максимальным количеством отрицательных элементов. Если таких нет, вывести 0.</p>
   <div class="io"><div class="io-row"><span class="io-k">M</span><code>3</code></div><div class="io-row"><span class="io-k">N</span><code>4</code></div><div class="io-row"><span class="io-k">Строка 1</span><code>1 -2 -3 4</code></div><div class="io-row"><span class="io-k">Строка 2</span><code>-5 6 -7 8</code></div><div class="io-row"><span class="io-k">Строка 3</span><code>9 -1 2 3</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>2</code></div></div>
   <div class="codebox">
-    <div class="bar"><span>t23.py · 19 строк</span><button type="button" class="copy" id="copy-t23" data-for="code-t23">Скопировать</button></div>
-    <pre id="code-t23"><code>m = int(input(&quot;M: &quot;))
-n = int(input(&quot;N: &quot;))
+    <div class="bar"><span>t23.py · 36 строк</span><button type="button" class="copy" id="copy-t23" data-for="code-t23">Скопировать</button></div>
+    <pre id="code-t23"><code>while True:
+    try:
+        m = int(input(&quot;M (сколько строк): &quot;))
+        n = int(input(&quot;N (сколько столбцов): &quot;))
+        if m &gt; 0 and n &gt; 0:
+            break
+        print(&quot;Ошибка: M и N должны быть больше нуля&quot;)
+    except ValueError:
+        print(&quot;Ошибка: M и N должны быть целыми числами&quot;)
 
 a = []
 for i in range(m):
-    a.append(input().split())
+    while True:
+        row = input(&quot;Строка &quot; + str(i + 1) + &quot; (чисел через пробел: &quot; + str(n) + &quot;): &quot;).split()
+        try:
+            for j in range(len(row)):
+                row[j] = int(row[j])
+            if len(row) == n:
+                break
+            print(&quot;Ошибка: чисел в строке должно быть&quot;, n)
+        except ValueError:
+            print(&quot;Ошибка: нужны только целые числа через пробел&quot;)
+    a.append(row)
 
 mx = 0
 otv = 0
 for j in range(n):
     c = 0
     for i in range(m):
-        if int(a[i][j]) &lt; 0:
+        if a[i][j] &lt; 0:
             c += 1
     if c &gt; mx:
         mx = c
@@ -144,15 +191,24 @@ print(&quot;Ответ:&quot;, otv)
   <p class="cond">а) Создать кортеж из строки с числами через запятую. б) Отсортировать кортеж по длине строк.</p>
   <div class="io"><div class="io-row"><span class="io-k">а)</span><code>10, 20, 3, 45</code></div><div class="io-row"><span class="io-k">б)</span><code>яблоко кот арбуз ёж</code></div><div class="io-row out"><span class="io-k">Ответ</span><code>(10, 20, 3, 45) и (&#x27;ёж&#x27;, &#x27;кот&#x27;, &#x27;арбуз&#x27;, &#x27;яблоко&#x27;)</code></div></div>
   <div class="codebox">
-    <div class="bar"><span>t24.py · 10 строк</span><button type="button" class="copy" id="copy-t24" data-for="code-t24">Скопировать</button></div>
-    <pre id="code-t24"><code>s = input(&quot;Числа через запятую: &quot;).split(&quot;,&quot;)
-t = []
-for x in s:
-    t.append(int(x))
+    <div class="bar"><span>t24.py · 19 строк</span><button type="button" class="copy" id="copy-t24" data-for="code-t24">Скопировать</button></div>
+    <pre id="code-t24"><code>while True:
+    s = input(&quot;Числа через запятую: &quot;).split(&quot;,&quot;)
+    try:
+        t = []
+        for x in s:
+            t.append(int(x))
+        break
+    except ValueError:
+        print(&quot;Ошибка: нужны целые числа через запятую, например 10, 20, 3&quot;)
 t = tuple(t)
 print(t)
 
-w = input(&quot;Слова через пробел: &quot;).split()
+while True:
+    w = input(&quot;Слова через пробел: &quot;).split()
+    if len(w) &gt; 0:
+        break
+    print(&quot;Ошибка: введите хотя бы одно слово&quot;)
 w.sort(key=len)
 print(tuple(w))
 </code></pre>
